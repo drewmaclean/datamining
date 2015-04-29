@@ -1,9 +1,8 @@
 import sys
 import csv
-from statistics import mean
+from statistics import *
 
 def main(readfile, writefile, iterations):
-
     fWriter = open(writefile, 'w', newline='')
     csvwriter = csv.writer(fWriter, delimiter=',')
 
@@ -15,18 +14,25 @@ def main(readfile, writefile, iterations):
 
     for row in csvreader:
         rowlist = []
-        for col in row:
+        for i, col in enumerate(row):
             col_lst = []
             col = col.split(' ')
-            for item in col:
-                if float(item) >= -900:
-                    col_lst.append(float(item))  # change to float
-            if not col_lst:
-                col_lst = [0]
-            col_mean = mean(col_lst)
-            #print("s " + str(col))
-            rowlist.append(col_mean)
+            if i == 5:
+                try:
+                    col_result = mode(col)
+                except:
+                    col_result = 0
+            else:
+                for item in col:
+                    if -900 <= float(item) <= 900:
+                        col_lst.append(float(item))  # change to float
+                if not col_lst:
+                    col_lst = [0]
+                col_result = mean(col_lst)
+                #print("s " + str(col))
+            rowlist.append(col_result)
         csvwriter.writerow(rowlist)
+
         if csvreader.line_num % 100 == 0:  # print progress
             progress = csvreader.line_num / int(iterations) * 100
             sys.stdout.write("File progress: %d%%   \r" % progress)
@@ -38,5 +44,6 @@ def main(readfile, writefile, iterations):
     fReader.close()
     fWriter.close()
 
-main('train_2013.csv', 'train_small.csv', 20000)
-#main(sys.argv[1], sys.argv[2], sys.argv[3])
+
+#main('train_2013.csv', 'train_small.csv', 100000)
+main(sys.argv[1], sys.argv[2], sys.argv[3])
