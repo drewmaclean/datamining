@@ -14,6 +14,7 @@ def main(readfile, writefile, iterations):
 
     for row in csvreader:
         rowlist = []
+        goodrow = False
         for i, col in enumerate(row):
             col_lst = []
             col = col.split(' ')
@@ -21,12 +22,16 @@ def main(readfile, writefile, iterations):
                 val = float(col[0])
                 if val < .1:
                     col_result = "none"
-                elif val <= 20:
+                    goodrow = False
+                elif val <= 5:
                     col_result = "low"
-                elif 20 < val < 100:
+                    goodrow = True
+                elif 5 < val < 50:
                     col_result = "med"
-                elif val >= 100:
+                    goodrow = True
+                elif val >= 50:
                     col_result = "high"
+                    goodrow = True
 
             elif i == 5:
                 try:
@@ -42,7 +47,8 @@ def main(readfile, writefile, iterations):
                 col_result = mean(col_lst)
                 #print("s " + str(col))
             rowlist.append(col_result)
-        csvwriter.writerow(rowlist)
+        if goodrow == True:
+            csvwriter.writerow(rowlist)
 
         if csvreader.line_num % 100 == 0:  # print progress
             progress = csvreader.line_num / int(iterations) * 100
@@ -56,5 +62,5 @@ def main(readfile, writefile, iterations):
     fWriter.close()
 
 
-main('train_2013.csv', 'train_nom.csv', 20000)
+main('train_2013.csv', 'train_nom.csv', 10000)
 #main(sys.argv[1], sys.argv[2], sys.argv[3])
