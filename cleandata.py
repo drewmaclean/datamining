@@ -17,7 +17,18 @@ def main(readfile, writefile, iterations):
         for i, col in enumerate(row):
             col_lst = []
             col = col.split(' ')
-            if i == 5:
+            if i == 19:
+                val = float(col[0])
+                if val < .1:
+                    col_result = "none"
+                elif val <= 20:
+                    col_result = "low"
+                elif 20 < val < 100:
+                    col_result = "med"
+                elif val >= 100:
+                    col_result = "high"
+
+            elif i == 5:
                 try:
                     col_result = mode(col)
                 except:
@@ -45,5 +56,5 @@ def main(readfile, writefile, iterations):
     fWriter.close()
 
 
-#main('train_2013.csv', 'train_small.csv', 100000)
-main(sys.argv[1], sys.argv[2], sys.argv[3])
+main('train_2013.csv', 'train_nom.csv', 20000)
+#main(sys.argv[1], sys.argv[2], sys.argv[3])
