@@ -12,18 +12,22 @@ def main(readfile, writefile, iterations):
     header = csvreader.__next__()
     csvwriter.writerow(header)
 
-    for row in csvreader:
+    for i, row in enumerate(csvreader):
+#        if i < 100000:
+#            continue
         rowlist = []
         goodrow = False
         for i, col in enumerate(row):
             col_lst = []
             col = col.split(' ')
+
             if i == 19:
                 val = float(col[0])
-                if val < .1:
-                    col_result = "none"
+                col_result = val
+                if val < 5:
+                    #col_result = "none"
                     goodrow = False
-                elif val <= 5:
+                elif 5 <= val <= 10:
                     col_result = "low"
                     goodrow = True
                 elif 5 < val < 50:
@@ -62,5 +66,5 @@ def main(readfile, writefile, iterations):
     fWriter.close()
 
 
-main('train_2013.csv', 'train_nom.csv', 10000)
+main('train_2013.csv', 'train_bin.csv', 100000)
 #main(sys.argv[1], sys.argv[2], sys.argv[3])
